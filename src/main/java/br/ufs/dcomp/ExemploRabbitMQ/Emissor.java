@@ -10,16 +10,16 @@ public class Emissor {
 
   public static void main(String[] argv) throws Exception {
     ConnectionFactory factory = new ConnectionFactory();
-    factory.setHost("ip-da-instancia-da-aws"); // Alterar
-    factory.setUsername("usuário-do-rabbitmq-server"); // Alterar
-    factory.setPassword("senha-do-rabbitmq-server"); // Alterar
+    factory.setHost("3.80.146.81"); // Alterar
+    factory.setUsername("jcadmin"); // Alterar
+    factory.setPassword("jcpass"); // Alterar
     factory.setVirtualHost("/");    Connection connection = factory.newConnection();
     Channel channel = connection.createChannel();
 
                       //(queue-name, durable, exclusive, auto-delete, params); 
     channel.queueDeclare(QUEUE_NAME, false,   false,     false,       null);
 
-    String message = "Olá!!!";
+    String message = "Boa noite, nação!";
     
                     //  (exchange, routingKey, props, message-body             ); 
     channel.basicPublish("",       QUEUE_NAME, null,  message.getBytes("UTF-8"));
