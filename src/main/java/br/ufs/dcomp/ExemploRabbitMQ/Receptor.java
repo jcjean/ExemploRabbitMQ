@@ -10,9 +10,9 @@ public class Receptor {
 
   public static void main(String[] argv) throws Exception {
     ConnectionFactory factory = new ConnectionFactory();
-    factory.setHost("3.82.149.15"); // Alterar
-    factory.setUsername("jcadmin"); // Alterar
-    factory.setPassword("jcpass"); // Alterar
+    factory.setHost(""); // Alterar
+    factory.setUsername(""); // Alterar
+    factory.setPassword(""); // Alterar
     factory.setVirtualHost("/");   
     Connection connection = factory.newConnection();
     Channel channel = connection.createChannel();
@@ -21,10 +21,10 @@ public class Receptor {
     channel.queueDeclare(QUEUE_NAME, false,   false,     false,       null);
     
     System.out.println(" [*] Esperando recebimento de mensagens...");
-
+    
     Consumer consumer = new DefaultConsumer(channel) {
       public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-
+        
         String message = new String(body, "UTF-8");
         System.out.println(" [x] Mensagem recebida: '" + message + "'");
 
@@ -34,5 +34,6 @@ public class Receptor {
     };
                       //(queue-name, autoAck, consumer);    
     channel.basicConsume(QUEUE_NAME, true,    consumer);
+    
   }
 }
