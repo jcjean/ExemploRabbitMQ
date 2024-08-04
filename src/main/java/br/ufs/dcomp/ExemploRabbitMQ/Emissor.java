@@ -11,9 +11,9 @@ public class Emissor {
 
   public static void main(String[] argv) throws Exception {
     ConnectionFactory factory = new ConnectionFactory();
-    factory.setHost(""); // Alterar
-    factory.setUsername(""); // Alterar
-    factory.setPassword(""); // Alterar
+    factory.setHost("44.206.104.42"); // Alterar
+    factory.setUsername("jcadmin"); // Alterar
+    factory.setPassword("jcpass"); // Alterar
     factory.setVirtualHost("/");    Connection connection = factory.newConnection();
     Channel channel = connection.createChannel();
 
@@ -21,23 +21,23 @@ public class Emissor {
     //channel.queueDeclare(QUEUE_NAME, false,   false,     false,       null);
     Scanner scan = new Scanner(System.in);
                     //  (exchange, routingKey, props, message-body             );
-    for(int i=0; i<10; i++){
-      if(i%2!=0){
-        String msg = scan.nextLine();
-        channel.basicPublish("E1",       "", null,  msg.getBytes("UTF-8"));
-        System.out.println(" [x] Mensagem enviada: '" + msg + "'");
-      }else{
-        String msg = scan.nextLine();
-        channel.basicPublish("E2",       "", null,  msg.getBytes("UTF-8"));
-        System.out.println(" [x] Mensagem enviada: '" + msg + "'");
-      }
-    }
+    
+    String msgFanout = scan.nextLine();
+    channel.basicPublish("E1",       "", null,  msgFanout.getBytes("UTF-8"));
+    System.out.println(" [x] Mensagem enviada: '" + msgFanout + "'");
 
+    String msgDirectA = scan.nextLine();
+    channel.basicPublish("E2",       "A", null,  msgDirectA.getBytes("UTF-8"));
+    System.out.println(" [x] Mensagem enviada: '" + msgDirectA + "'");
+      
+    String msgDirectB = scan.nextLine();
+    channel.basicPublish("E2",       "B", null,  msgDirectB.getBytes("UTF-8"));
+    System.out.println(" [x] Mensagem enviada: '" + msgDirectB + "'");
+    
     channel.close();
     connection.close();
     scan.close();
   }
 }
-
 
 //mvn compile assembly:single

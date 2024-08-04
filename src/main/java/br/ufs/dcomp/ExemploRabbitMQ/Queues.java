@@ -10,9 +10,9 @@ public class Queues {
 
   public static void main(String[] argv) throws Exception {
     ConnectionFactory factory = new ConnectionFactory();
-    factory.setHost(""); // Alterar
-    factory.setUsername(""); // Alterar
-    factory.setPassword(""); // Alterar
+    factory.setHost("44.206.104.42"); // Alterar
+    factory.setUsername("jcadmin"); // Alterar
+    factory.setPassword("jcpass"); // Alterar
     factory.setVirtualHost("/");    Connection connection = factory.newConnection();
     Channel channel = connection.createChannel();
     

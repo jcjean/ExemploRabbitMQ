@@ -7,28 +7,30 @@ import com.rabbitmq.client.ConnectionFactory;
 public class Exchanges {
 
   private final static String QUEUE_NAME = "minha-fila";
-  private final static String EXCHANGE_NAME = "E1"; //fanout
-  private final static String EXCHANGE_NAME2 = "E2"; //direct
+  private final static String EXCHANGE_FAN_NAME = "E1"; //fanout
+  private final static String EXCHANGE_DIR_NAME = "E2"; //direct
   public static void main(String[] argv) throws Exception {
     ConnectionFactory factory = new ConnectionFactory();
-    factory.setHost(""); // Alterar
-    factory.setUsername(""); // Alterar
-    factory.setPassword(""); // Alterar
-    factory.setVirtualHost("/");    Connection connection = factory.newConnection();
+    factory.setHost("44.206.104.42"); // Alterar
+    factory.setUsername("jcadmin"); // Alterar
+    factory.setPassword("jcpass"); // Alterar
+    factory.setVirtualHost("/");
+    Connection connection = factory.newConnection();
     Channel channel = connection.createChannel();
+    
     boolean A=true;
     
-    channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
-    channel.exchangeDeclare(EXCHANGE_NAME2, "direct");
+    channel.exchangeDeclare(EXCHANGE_FAN_NAME, "fanout");
+    channel.exchangeDeclare(EXCHANGE_DIR_NAME, "direct");
     
     for(int i=0;i<10;i++){
       if(i%2!=0){
-        channel.queueBind(QUEUE_NAME+i, "E1", "");//fanout - todos os ímpares
-      }else if(A){
-        channel.queueBind(QUEUE_NAME+i, "E2", "");//direct - pares de chaveA
+        channel.queueBind(QUEUE_NAME+i, EXCHANGE_FAN_NAME, "");//fanout - todos os ímpares
+      }else if(A==true){
+        channel.queueBind(QUEUE_NAME+i, EXCHANGE_DIR_NAME, "A");//direct - pares de chaveA
         A = false;
       }else if(A==false){
-        channel.queueBind(QUEUE_NAME+i,"E2", "");//direct - pares de chaveB
+        channel.queueBind(QUEUE_NAME+i,EXCHANGE_DIR_NAME, "B");//direct - pares de chaveB
         A = true;
       }
     }
